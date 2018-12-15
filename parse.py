@@ -68,7 +68,10 @@ def parse_text():
     output['output_1'] = output_1
     output['output_2'] = output_2
     output['output_3'] = output_3
+
+    write_output_file(output)
     return output
+
 
 def process_file(file, delimiter):
     ''' read text and split into a list of a list of strings '''
@@ -114,6 +117,36 @@ def process_space_file(raw_data, delimiter):
                            dob=line[4],
                            fav_color=line[5]).generate_line())
     return list
+
+
+def write_output_file(output):
+    output_1 = output['output_1']
+    output_2 = output['output_2']
+    output_3 = output['output_3']
+    with open("output.txt", "w") as text_file:
+        text_file.write('Output 1:')
+        text_file.write('\n')
+        for line in output['output_1']:
+            text_file.write(line)
+            text_file.write('\n')
+
+        text_file.write('\n')
+
+        text_file.write('Output 2:')
+        text_file.write('\n')
+        for line in output['output_2']:
+            text_file.write(line)
+            text_file.write('\n')
+
+        text_file.write('\n')
+
+        text_file.write('Output 3:')
+        text_file.write('\n')
+        for line in output['output_3']:
+            text_file.write(line)
+            text_file.write('\n')
+            
+    text_file.close()
 
 
 if __name__ == '__main__':
