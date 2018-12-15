@@ -18,26 +18,16 @@ class Person():
 
         self.fav_color = fav_color
 
-        formatted_date = datetime.strptime(dob, '%m/%d/%Y')
-        self.dob = formatted_date.strftime('%m/%d/%Y')
+        self.dob = datetime.strptime(dob, '%m/%d/%Y')
+        print(self.dob)
+        print(type(self.dob))
 
-        self.line = [self.last_name, self.first_name, self.gender,
-                    self.dob, self.fav_color]
-
-    def sort_by_gen_ln(self):
-        '''sort by gender (females before males) then by last name ascending'''
-        sorted_line = sorted(self.line, key=operator.itemgetter(2, 0))
-        return sorted_line
-
-    def sort_by_dob_ln(self):
-        ''' sort by birth date, ascending then by last name ascending '''
-        sorted_line = sorted(self.line, key=operator.itemgetter(3, 0))
-        return sorted_line
-
-    def sort_by_ln_desc(self):
-        ''' sort by last name, descending '''
-        sorted_line = sorted(self.line, key=operator.itemgetter(0), reverse=True)
-        return sorted_line
+    def generate_line(self):
+        line = [self.last_name, self.first_name, self.gender,
+                self.dob, self.fav_color]
+        for item in line:
+            str(item)
+        return line
 
 
 def parse_text():
@@ -58,20 +48,22 @@ def parse_text():
     output_1_sorted = []
     output_2_sorted = []
     output_3_sorted = []
-    for line in persons_list:
-        output_1_sorted.append(line.sort_by_gen_ln())
-        # output_2_sorted.append(line.sort_by_dob_ln())
-        output_3_sorted.append(line.sort_by_ln_desc())
+    output_1_sorted = sorted(persons_list, key=operator.itemgetter(2, 0))
+    output_2_sorted = sorted(persons_list, key=operator.itemgetter(3, 0))
+    output_3_sorted = sorted(persons_list, key=operator.itemgetter(0), reverse=True)
+
+    for line in output_1_sorted:
+        line[3] = datetime.strftime(line[3], '%m/%d/%Y')
 
     print('Output 1:')
     for line in output_1_sorted:
-        print(line)
+        print(' '.join(line))
     print('Output 2:')
     for line in output_2_sorted:
-        print(line)
+        print(' '.join(line))
     print('Output 3:')
     for line in output_3_sorted:
-        print(line)
+        print(' '.join(line))
 
 
 def process_file(file, delimiter):
@@ -90,7 +82,7 @@ def process_comma_file(raw_data, delimiter):
                        first_name=line[1],
                        gender=line[2],
                        fav_color=line[3],
-                       dob=line[4]))
+                       dob=line[4]).generate_line())
     return list
 
 
@@ -103,7 +95,7 @@ def process_pipe_file(raw_data, delimiter):
                            first_name=line[1],
                            gender=line[3],
                            fav_color=line[4],
-                           dob=line[5]))
+                           dob=line[5]).generate_line())
     return list
 
 
@@ -116,7 +108,7 @@ def process_space_file(raw_data, delimiter):
                            first_name=line[1],
                            gender=line[3],
                            dob=line[4],
-                           fav_color=line[5]))
+                           fav_color=line[5]).generate_line())
     return list
 
 

@@ -1,94 +1,111 @@
 import operator
+from datetime import datetime
+
+
+class Person():
+
+    def __init__(self, last_name='', first_name='', gender='', fav_color='', dob=''):
+
+        self.last_name = last_name
+        self.first_name = first_name
+
+        gender = gender
+        if gender == 'M' or gender == 'Male':
+            self.gender = 'Male'
+        elif gender == 'F' or gender == 'Female':
+            self.gender = 'Female'
+        else:
+            self.gender = 'Unknown'
+
+        self.fav_color = fav_color
+
+        self.dob = datetime.strptime(dob, '%m/%d/%Y')
+
+    def generate_line(self):
+        line = [self.last_name, self.first_name, self.gender,
+                self.dob, self.fav_color]
+        for item in line:
+            str(item)
+        return line
 
 
 def parse_text():
-    ''' Pareses three text files with different formats. Adds all lines to
+    ''' Parses three text files with different formats. Adds all lines to
     common list. Orders lines and formats data for printing.
-    Comma-separated text format: LN, FN, gen, M/D/Y, fav color
-    Pipe-separated text format: LN, FN, MI, gen, fav color, M-D-Y
-    Space-separated text format:  Format: LN, FN, MI, gen, M-D-Y, fav color
     '''
-    split_lines = []
-    with open("comma.txt", "r") as comma_file:
-        for line in comma_file:
-            line = line.split(',')
-            split_lines.append(line)
+    comma_lines = process_file("comma.txt", ',')
+    processed_comma_lines = process_comma_file(comma_lines, ',')
 
-    with open("pipe.txt", "r") as pipe_file:  # Format:
-        pipe_lines = []
-        for line in pipe_file:
-            line = line.split("|")
-            del line[2]
-            line[4] = line[4].replace("-", "/") # date display
-            pipe_lines.append(line)
-        split_lines.extend(pipe_lines)
+    pipe_lines = process_file("pipe.txt", '|')
+    processed_pipe_lines = process_pipe_file(pipe_lines, '|')
 
-    # switch order of color, DOB, so it's DOB, color for comma and pipe texts
-    for line in split_lines:
-        line[3], line[4] = line[4], line[3]
+    space_lines = process_file("space.txt", ' ')
+    processed_space_lines = process_space_file(space_lines, ' ')
 
-    with open("space.txt", "r") as space_file: #
-        space_lines = []
-        for line in space_file:
-            line = line.split(" ")
-            del line[2]
-            dob = line[3].lstrip()
-            line[3] = line[3].replace("-", "/") # date display
-            space_lines.append(line)
-        split_lines.extend(space_lines)
+    persons_list = processed_comma_lines + processed_pipe_lines + processed_space_lines
 
-    formatted_lines = []
-    for line in split_lines:
-        last_name = line[0].strip().lstrip()
-        first_name = line[1].strip().lstrip()
-        gender = line[2].strip().lstrip()
-        dob_mdcy = line[3].strip().lstrip()
-        fav_color = line[4].strip().lstrip()
-        formatted_line = [last_name, first_name, gender, dob_mdcy, fav_color]
-
-        formatted_lines.append(formatted_line)
-
-    for line in formatted_lines:  # translate gender for display
-        line[2] = translate_gender(line[2])
-
-    # sort by gender (females before males) then by last name ascending
-    output_1_sorted_lines = sorted(formatted_lines, key=operator.itemgetter(2, 0))
-    # sort by birth date, ascending then by last name ascending
-    output_2_sorted_lines = sorted(formatted_lines, key=operator.itemgetter(4, 0))
-    # sort by last name, descending
-    output_3_sorted_lines = sorted(formatted_lines, key=operator.itemgetter(0),
-                                  reverse=True)
-
-    output_1_parsed = []
-    for line in output_1_sorted_lines:
-        output_1_parsed.append(' '.join(line))
-
-    output_2_parsed = []
-    for line in output_2_sorted_lines:
-        output_2_parsed.append(' '.join(line))
-
-    output_3_parsed = []
-    for line in output_3_sorted_lines:
-        output_3_parsed.append(' '.join(line))
+    output_1_sorted = []
+    output_2_sorted = []
+    output_3_sorted = []
+    output_1_sorted = sorted(persons_list, key=operator.itemgetter(2, 0))
+    output_2_sorted = sorted(persons_list, key=operator.itemgetter(3, 0))
+    output_3_sorted = sorted(persons_list, key=operator.itemgetter(0), reverse=True)
 
     print('Output 1:')
-    for line in output_1_parsed:
-        print(line)
+    for line in output_1_sorted:
+        print(' '.join(line))
     print('Output 2:')
-    for line in output_2_parsed:
-        print(line)
+    for line in output_2_sorted:
+        print(' '.join(line))
     print('Output 3:')
-    for line in output_3_parsed:
-        print(line)
+    for line in output_3_sorted:
+        print(' '.join(line))
 
 
-def translate_gender(gender):
-    if gender == 'M' or gender == 'Male':
-        return 'Male'
-    elif gender == 'F' or gender == 'Female':
-        return 'Female'
-    else:
-        return 'Unknown'
+def process_file(file, delimiter):
+    ''' read text and split into a list of a list of strings '''
+    raw_data = []
+    with open(file, "r") as file:
+        raw_data = [line.split(delimiter) for line in file]
+    return raw_data
+
+
+def process_comma_file(raw_data, delimiter):
+    list = []
+    for word in raw_data:
+        line = [x.strip() for x in word]
+        list.append(Person(last_name=line[0],
+                       first_name=line[1],
+                       gender=line[2],
+                       fav_color=line[3],
+                       dob=line[4]).generate_line())
+    return list
+
+
+def process_pipe_file(raw_data, delimiter):
+    list = []
+    for word in raw_data:
+        line = [x.strip() for x in word]
+        line[5] = line[5].replace("-", "/")
+        list.append(Person(last_name=line[0],
+                           first_name=line[1],
+                           gender=line[3],
+                           fav_color=line[4],
+                           dob=line[5]).generate_line())
+    return list
+
+
+def process_space_file(raw_data, delimiter):
+    list = []
+    for word in raw_data:
+        line = [x.strip() for x in word]
+        line[4] = line[4].replace("-", "/")
+        list.append(Person(last_name=line[0],
+                           first_name=line[1],
+                           gender=line[3],
+                           dob=line[4],
+                           fav_color=line[5]).generate_line())
+    return list
 
 
 if __name__ == '__main__':
