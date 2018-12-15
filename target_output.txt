@@ -9,7 +9,6 @@ Bonk Radek Male 6/3/1975 Green
 Bouillon Francis Male 6/3/1975 Blue
 Smith Steve Male 3/3/1985 Red
 
-
 Output 2:
 Abercrombie Neil Male 2/13/1943 Tan
 Kelly Sue Female 7/12/1959 Pink
