@@ -1,0 +1,18 @@
+Instructions for testing this code:
+
+  Make sure you have the following files in your working directory:
+   1) parse.py
+   2) tests.py
+   3) each of the 3 text files (comma, pipe, space)
+   4) target_output.txt
+
+   In the Terminal, cd into the working directory.
+
+  First run the code to generate the output using the following command:
+     python3 ./parse.py
+
+  Then, you can view the generated output by typing:
+     cat 'output.txt'
+
+  Tests on the code can be run with:
+     python3 ./tests.py
