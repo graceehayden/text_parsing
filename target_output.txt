@@ -1,8 +1,3 @@
-# Ensure that fields are displayed in the following order:
-#       last name, first name, gender, date of birth, favorite color.
-# Display dates in the format M/D/YYYY.
-
-# sorted by gender (females before males) then by last name ascending
 Output 1:
 Hingis Martina Female 4/2/1979 Green
 Kelly Sue Female 7/12/1959 Pink
@@ -14,7 +9,7 @@ Bonk Radek Male 6/3/1975 Green
 Bouillon Francis Male 6/3/1975 Blue
 Smith Steve Male 3/3/1985 Red
 
-# sorted by birth date, ascending then by last name ascending
+
 Output 2:
 Abercrombie Neil Male 2/13/1943 Tan
 Kelly Sue Female 7/12/1959 Pink
@@ -26,7 +21,6 @@ Kournikova Anna Female 6/3/1975 Red
 Hingis Martina Female 4/2/1979 Green
 Smith Steve Male 3/3/1985 Red
 
-sorted by last name, descending
 Output 3:
 Smith Steve Male 3/3/1985 Red
 Seles Monica Female 12/2/1973 Black

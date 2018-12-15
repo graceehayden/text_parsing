@@ -51,16 +51,24 @@ def parse_text():
     output_2_sorted = sorted(persons_list, key=operator.itemgetter(3, 0))
     output_3_sorted = sorted(persons_list, key=operator.itemgetter(0), reverse=True)
 
-    print('Output 1:')
     for line in output_1_sorted:
-        print(' '.join(line))
-    print('Output 2:')
-    for line in output_2_sorted:
-        print(' '.join(line))
-    print('Output 3:')
-    for line in output_3_sorted:
-        print(' '.join(line))
+        line[3] = datetime.strftime(line[3], '%-m/%-d/%Y')
 
+    output_1 = []
+    output_2 = []
+    output_3 = []
+    for line in output_1_sorted:
+        output_1.append(' '.join(line))
+    for line in output_2_sorted:
+        output_2.append(' '.join(line))
+    for line in output_3_sorted:
+        output_3.append(' '.join(line))
+
+    output = {}
+    output['output_1'] = output_1
+    output['output_2'] = output_2
+    output['output_3'] = output_3
+    return output
 
 def process_file(file, delimiter):
     ''' read text and split into a list of a list of strings '''

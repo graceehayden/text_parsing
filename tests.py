@@ -1,16 +1,37 @@
 import unittest
+from parse import *
 
-# confirm that functions complain when there are too many or not enough fields
+class TestParsing(unittest.TestCase):
 
-def comma_file():
+    def test_output_1(self):
+        """
+        Make sure a parsed line looks as expected
+        """
+        output = parse_text()
+        output_1 = output['output_1']
+
+        self.assertEqual(output_1[0],'Hingis Martina Female 4/2/1979 Green')
 
 
-def pipe_file():
+    def test_output_2(self):
+        """
+        Make sure a parsed line looks as expected
+        """
+        output = parse_text()
+        output_2 = output['output_2']
+
+        self.assertEqual(output_2[0],'Abercrombie Neil Male 2/13/1943 Tan')
 
 
-def space_file():
+    def test_output_3(self):
+        """
+        Make sure a parsed line looks as expected
+        """
+        output = parse_text()
+        output_3 = output['output_3']
+
+        self.assertEqual(output_3[0],'Smith Steve Male 3/3/1985 Red')
 
 
-class Output1Test(unittest.TestCase):
-    def test_line(self):
-        self.assertEqual(comma_file(3), 4)
+if __name__ == '__main__':
+    unittest.main()
